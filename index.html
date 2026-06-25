@@ -9,235 +9,296 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TIC Order">
 <title>Thirupathi Ice Cream — Order Online</title>
-<link rel="manifest" href="#" id="manifest-link">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-  html,body{height:100%;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#1a1a1a;overscroll-behavior:none}
-  button{font-family:inherit;cursor:pointer}
-  input,textarea{font-family:inherit;outline:none}
-  .app{max-width:480px;margin:0 auto;min-height:100vh;background:#fff;position:relative;overflow-x:hidden}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#1a1a1a;overscroll-behavior:none}
+button{font-family:inherit;cursor:pointer}
+input,textarea{font-family:inherit;outline:none}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:#fff;position:relative;overflow-x:hidden}
 
-  /* ── TOP BAR ── */
-  .topbar{background:#1a3c2e;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:200}
-  .topbar .back-btn{background:none;border:none;color:#fff;font-size:22px;padding:0;line-height:1;display:flex;align-items:center}
-  .topbar h1{font-size:16px;font-weight:600;flex:1;letter-spacing:0.2px}
-  .topbar .cart-icon-btn{background:none;border:none;color:#fff;position:relative;font-size:22px;display:flex;align-items:center}
-  .topbar .cart-badge{position:absolute;top:-7px;right:-7px;background:#f0a500;color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+/* ── TOP NAVBAR ── */
+.navbar{background:#1a3c2e;color:#fff;padding:0 16px;height:56px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:300}
+.nav-hamburger{background:none;border:none;color:#fff;display:flex;flex-direction:column;gap:5px;padding:4px;cursor:pointer;flex-shrink:0}
+.nav-hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all 0.3s}
+.navbar-title{flex:1;font-size:15px;font-weight:700;letter-spacing:0.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-cart-btn{background:none;border:none;color:#fff;position:relative;padding:6px;display:flex;align-items:center;cursor:pointer;flex-shrink:0}
+.nav-cart-badge{position:absolute;top:0px;right:0px;background:#f0a500;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;display:none}
+.nav-back-btn{background:none;border:none;color:#fff;display:flex;align-items:center;padding:4px;cursor:pointer;flex-shrink:0}
 
-  /* ── HERO ── */
-  .hero{background:linear-gradient(160deg,#1a3c2e 0%,#2d6a4f 100%);color:#fff;padding:24px 20px 28px;text-align:center}
-  .hero-logo{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px}
-  .hero h2{font-size:20px;font-weight:700;margin-bottom:4px;letter-spacing:0.3px}
-  .hero .hero-sub{font-size:13px;color:rgba(255,255,255,0.72);margin-bottom:14px}
-  .hero-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-  .hero-tag{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,0.9)}
+/* ── SIDE DRAWER MENU ── */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.28s}
+.drawer-overlay.open{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:0;left:0;width:78vw;max-width:300px;height:100vh;background:#fff;z-index:500;transform:translateX(-105%);transition:transform 0.28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden}
+.drawer.open{transform:translateX(0)}
+.drawer-head{background:linear-gradient(160deg,#1a3c2e,#2d6a4f);padding:28px 20px 20px;color:#fff}
+.drawer-logo{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:10px}
+.drawer-head h2{font-size:15px;font-weight:700;margin-bottom:2px}
+.drawer-head p{font-size:12px;color:rgba(255,255,255,0.72)}
+.drawer-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.drawer-nav{flex:1;overflow-y:auto;padding:8px 0}
+.drawer-nav a,.drawer-nav button.drawer-link{display:flex;align-items:center;gap:14px;padding:14px 20px;font-size:14px;font-weight:500;color:#222;text-decoration:none;border:none;background:none;width:100%;text-align:left;cursor:pointer;border-bottom:1px solid #f5f5f5;transition:background 0.15s}
+.drawer-nav a:active,.drawer-nav button.drawer-link:active{background:#f0f9f4}
+.drawer-nav a .dnav-icon,.drawer-nav button.drawer-link .dnav-icon{width:36px;height:36px;border-radius:10px;background:#e8f5ee;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.drawer-nav .dnav-label{flex:1}
+.drawer-nav .dnav-arrow{color:#bbb;font-size:16px}
+.drawer-divider{height:1px;background:#f0f0f0;margin:4px 0}
+.drawer-footer{padding:16px 20px;border-top:1px solid #f0f0f0;font-size:12px;color:#999;text-align:center}
+.drawer-footer a{color:#1a3c2e;font-weight:600;text-decoration:none}
 
-  /* ── SEARCH ── */
-  .search-bar{padding:12px 16px;background:#fff;border-bottom:1px solid #ebebeb;position:sticky;top:52px;z-index:150}
-  .search-wrap{position:relative}
-  .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none}
-  .search-wrap input{width:100%;padding:10px 12px 10px 38px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;background:#f9f9f9;color:#1a1a1a;transition:border-color 0.2s}
-  .search-wrap input:focus{border-color:#2d6a4f;background:#fff}
+/* ── HERO ── */
+.hero{background:linear-gradient(160deg,#1a3c2e 0%,#2d6a4f 100%);color:#fff;padding:22px 20px 26px;text-align:center}
+.hero-logo{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 10px}
+.hero h2{font-size:19px;font-weight:700;margin-bottom:3px}
+.hero .hero-sub{font-size:13px;color:rgba(255,255,255,0.72);margin-bottom:13px}
+.hero-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hero-tag{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 13px;font-size:12px;color:rgba(255,255,255,0.9)}
 
-  /* ── CATEGORY TABS ── */
-  .cat-tabs{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;background:#fff;border-bottom:1px solid #ebebeb;scrollbar-width:none}
-  .cat-tabs::-webkit-scrollbar{display:none}
-  .cat-tab{white-space:nowrap;padding:7px 16px;border-radius:20px;border:1.5px solid #ddd;font-size:13px;font-weight:500;background:#f9f9f9;color:#555;flex-shrink:0;transition:all 0.2s}
-  .cat-tab.active{background:#1a3c2e;color:#fff;border-color:#1a3c2e}
+/* ── SEARCH ── */
+.search-bar{padding:11px 16px;background:#fff;border-bottom:1px solid #ebebeb;position:sticky;top:56px;z-index:200}
+.search-wrap{position:relative}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none}
+.search-wrap input{width:100%;padding:10px 12px 10px 38px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;background:#f9f9f9;color:#1a1a1a;transition:border-color 0.2s}
+.search-wrap input:focus{border-color:#2d6a4f;background:#fff}
 
-  /* ── PRODUCT GRID ── */
-  .section-label{font-size:12px;font-weight:700;color:#888;padding:14px 16px 6px;text-transform:uppercase;letter-spacing:0.8px}
-  .product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:4px 16px 16px}
-  .product-card{background:#fff;border:1.5px solid #ebebeb;border-radius:16px;overflow:hidden;transition:transform 0.15s,border-color 0.15s}
-  .product-card:active{transform:scale(0.97)}
-  .prod-thumb{width:100%;height:108px;background:linear-gradient(135deg,#e8f5ee,#c8e6d4);display:flex;align-items:center;justify-content:center;font-size:42px}
-  .prod-body{padding:10px 10px 12px}
-  .prod-name{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:4px;line-height:1.35}
-  .prod-desc{font-size:11.5px;color:#777;line-height:1.45;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:33px}
-  .add-btn{width:100%;padding:8px;border:1.5px solid #1a3c2e;border-radius:10px;background:transparent;color:#1a3c2e;font-size:13px;font-weight:600;transition:all 0.15s}
-  .add-btn:active{background:#1a3c2e;color:#fff}
-  .qty-row{display:flex;align-items:center;justify-content:space-between;border:1.5px solid #1a3c2e;border-radius:10px;overflow:hidden;height:36px}
-  .qty-row button{border:none;background:none;color:#1a3c2e;font-size:20px;width:36px;height:36px;font-weight:600;line-height:1;display:flex;align-items:center;justify-content:center}
-  .qty-row button:active{background:#e8f5ee}
-  .qty-row span{font-size:14px;font-weight:600;color:#1a3c2e;flex:1;text-align:center}
+/* ── CATEGORY TABS ── */
+.cat-tabs{display:flex;gap:8px;padding:11px 16px;overflow-x:auto;background:#fff;border-bottom:1px solid #ebebeb;scrollbar-width:none}
+.cat-tabs::-webkit-scrollbar{display:none}
+.cat-tab{white-space:nowrap;padding:7px 15px;border-radius:20px;border:1.5px solid #ddd;font-size:13px;font-weight:500;background:#f9f9f9;color:#555;flex-shrink:0;transition:all 0.2s}
+.cat-tab.active{background:#1a3c2e;color:#fff;border-color:#1a3c2e}
 
-  /* ── CART STICKY BAR ── */
-  .cart-sticky{position:sticky;bottom:0;background:#1a3c2e;color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 -4px 20px rgba(0,0,0,0.15);border-top:1px solid rgba(255,255,255,0.1)}
-  .cart-sticky-left{display:flex;align-items:center;gap:12px}
-  .cart-items-pill{background:rgba(255,255,255,0.18);border-radius:8px;padding:4px 10px;font-size:13px;font-weight:600}
-  .cart-sticky span{font-size:15px;font-weight:600}
-  .cart-sticky svg{opacity:0.8}
+/* ── PRODUCT GRID ── */
+.section-label{font-size:12px;font-weight:700;color:#888;padding:14px 16px 6px;text-transform:uppercase;letter-spacing:0.8px}
+.product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:4px 16px 16px}
+.product-card{background:#fff;border:1.5px solid #ebebeb;border-radius:16px;overflow:hidden;transition:transform 0.15s}
+.product-card:active{transform:scale(0.97)}
+.prod-thumb{width:100%;height:108px;background:linear-gradient(135deg,#e8f5ee,#c8e6d4);display:flex;align-items:center;justify-content:center;font-size:42px}
+.prod-body{padding:10px 10px 12px}
+.prod-name{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:4px;line-height:1.35}
+.prod-desc{font-size:11.5px;color:#777;line-height:1.45;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:33px}
+.add-btn{width:100%;padding:8px;border:1.5px solid #1a3c2e;border-radius:10px;background:transparent;color:#1a3c2e;font-size:13px;font-weight:600;transition:all 0.15s}
+.add-btn:active{background:#1a3c2e;color:#fff}
+.qty-row{display:flex;align-items:center;border:1.5px solid #1a3c2e;border-radius:10px;overflow:hidden;height:36px}
+.qty-row button{border:none;background:none;color:#1a3c2e;font-size:20px;width:36px;height:36px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qty-row button:active{background:#e8f5ee}
+.qty-row span{font-size:14px;font-weight:600;color:#1a3c2e;flex:1;text-align:center}
 
-  /* ── PAGES ── */
-  .page{display:none;min-height:calc(100vh - 52px)}
-  .page.active{display:block}
+/* ── PAGES ── */
+.page{display:none;min-height:calc(100vh - 56px)}
+.page.active{display:block}
 
-  /* ── CART PAGE ── */
-  .cart-items-list{padding:16px}
-  .cart-item-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #f0f0f0}
-  .cart-item-emoji{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#e8f5ee,#c8e6d4);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
-  .cart-item-info{flex:1}
-  .cart-item-name{font-size:14px;font-weight:600;margin-bottom:6px}
-  .cart-item-qty{display:flex;align-items:center;gap:0;border:1.5px solid #1a3c2e;border-radius:10px;overflow:hidden;width:100px;height:32px}
-  .cart-item-qty button{border:none;background:none;color:#1a3c2e;font-size:18px;width:32px;height:32px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .cart-item-qty button:active{background:#e8f5ee}
-  .cart-item-qty span{font-size:13px;font-weight:600;color:#1a3c2e;flex:1;text-align:center}
-  .remove-item-btn{border:none;background:none;color:#ccc;font-size:18px;padding:4px;display:flex;align-items:center}
-  .remove-item-btn:active{color:#e24b4a}
-  .order-box{margin:4px 16px 14px;background:#f9f9f9;border-radius:14px;padding:14px 16px;border:1px solid #ebebeb}
-  .order-box h4{font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px}
-  .order-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;color:#333}
-  .order-row.total{border-top:1px solid #ddd;margin-top:8px;padding-top:10px;font-weight:700;font-size:14px;color:#1a1a1a}
-  .cod-badge{margin:0 16px 14px;background:#eaf6ef;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;border:1px solid #b8e0c8}
-  .cod-badge .cod-text{font-size:13px;color:#1a5c35;line-height:1.5}
-  .cod-badge .cod-text strong{display:block;font-size:14px;margin-bottom:1px}
-  .form-wrap{padding:4px 16px 8px}
-  .form-wrap h3{font-size:16px;font-weight:700;margin-bottom:14px;color:#1a1a1a}
-  .form-group{margin-bottom:14px}
-  .form-group label{font-size:13px;font-weight:600;color:#555;display:block;margin-bottom:6px}
-  .form-group input,.form-group textarea{width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;background:#fafafa;color:#1a1a1a;transition:border-color 0.2s}
-  .form-group input:focus,.form-group textarea:focus{border-color:#2d6a4f;background:#fff}
-  .form-group textarea{resize:none;height:82px;line-height:1.5}
-  .place-order-btn{width:calc(100% - 32px);margin:4px 16px 20px;padding:16px;background:#1a3c2e;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(26,60,46,0.3);transition:opacity 0.15s}
-  .place-order-btn:active{opacity:0.85}
-  .empty-cart{text-align:center;padding:64px 24px}
-  .empty-cart .big-emoji{font-size:64px;display:block;margin-bottom:16px}
-  .empty-cart h3{font-size:18px;font-weight:600;margin-bottom:8px;color:#333}
-  .empty-cart p{font-size:14px;color:#888}
-  .browse-btn{margin-top:20px;padding:12px 28px;background:#1a3c2e;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600}
+/* ── CART PAGE ── */
+.cart-items-list{padding:16px}
+.cart-item-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #f0f0f0}
+.cart-item-emoji{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#e8f5ee,#c8e6d4);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.cart-item-info{flex:1}
+.cart-item-name{font-size:14px;font-weight:600;margin-bottom:6px;line-height:1.3}
+.cart-item-qty{display:flex;align-items:center;border:1.5px solid #1a3c2e;border-radius:10px;overflow:hidden;width:104px;height:32px}
+.cart-item-qty button{border:none;background:none;color:#1a3c2e;font-size:18px;width:32px;height:32px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cart-item-qty button:active{background:#e8f5ee}
+.cart-item-qty span{font-size:13px;font-weight:600;color:#1a3c2e;flex:1;text-align:center}
+.remove-item-btn{border:none;background:none;color:#ccc;padding:6px;display:flex;align-items:center;flex-shrink:0}
+.remove-item-btn:active{color:#e24b4a}
+.order-box{margin:4px 16px 14px;background:#f9f9f9;border-radius:14px;padding:14px 16px;border:1px solid #ebebeb}
+.order-box h4{font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px}
+.order-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;color:#333}
+.order-row.total{border-top:1px solid #ddd;margin-top:8px;padding-top:10px;font-weight:700;font-size:14px;color:#1a1a1a}
+.cod-badge{margin:0 16px 14px;background:#eaf6ef;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;border:1px solid #b8e0c8}
+.cod-text{font-size:13px;color:#1a5c35;line-height:1.5}
+.cod-text strong{display:block;font-size:14px;margin-bottom:1px}
+.form-wrap{padding:4px 16px 8px}
+.form-wrap h3{font-size:16px;font-weight:700;margin-bottom:14px;color:#1a1a1a}
+.form-group{margin-bottom:14px}
+.form-group label{font-size:13px;font-weight:600;color:#555;display:block;margin-bottom:6px}
+.form-group input,.form-group textarea{width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;background:#fafafa;color:#1a1a1a;transition:border-color 0.2s}
+.form-group input:focus,.form-group textarea:focus{border-color:#2d6a4f;background:#fff}
+.form-group textarea{resize:none;height:82px;line-height:1.5}
+.place-order-btn{width:calc(100% - 32px);margin:4px 16px 24px;padding:16px;background:#1a3c2e;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(26,60,46,0.28);transition:opacity 0.15s}
+.place-order-btn:active{opacity:0.85}
+.empty-cart{text-align:center;padding:64px 24px}
+.empty-cart .big-emoji{font-size:64px;display:block;margin-bottom:16px}
+.empty-cart h3{font-size:18px;font-weight:600;margin-bottom:8px;color:#333}
+.empty-cart p{font-size:14px;color:#888}
+.browse-btn{margin-top:20px;padding:12px 28px;background:#1a3c2e;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600}
 
-  /* ── SUCCESS PAGE ── */
-  .success-wrap{text-align:center;padding:48px 24px}
-  .success-emoji{font-size:72px;display:block;margin-bottom:20px}
-  .success-wrap h2{font-size:22px;font-weight:700;margin-bottom:8px}
-  .success-wrap .success-sub{font-size:14px;color:#666;margin-bottom:4px;line-height:1.6}
-  .wa-confirm-box{background:#eaf8f0;border:1px solid #a8dfc0;border-radius:14px;padding:16px;margin:20px 0;text-align:left;font-size:13px;color:#1a5c35;line-height:1.7}
-  .wa-confirm-box strong{font-size:14px}
-  .cod-confirm{background:#fff8e8;border:1px solid #f0d080;border-radius:12px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#7a5800;text-align:left;line-height:1.6}
-  .cod-confirm strong{display:block;font-size:14px;margin-bottom:2px}
-  .new-order-btn{padding:14px 36px;background:#1a3c2e;color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700}
-  .contact-strip{background:#f5f5f5;padding:16px 20px;text-align:center;font-size:13px;color:#666;border-top:1px solid #ebebeb;margin-top:24px}
-  .contact-strip a{color:#1a3c2e;font-weight:600;text-decoration:none}
-
-  /* ── NO RESULTS ── */
-  .no-results{text-align:center;padding:40px 24px;color:#999}
-  .no-results span{font-size:40px;display:block;margin-bottom:10px}
+/* ── SUCCESS PAGE ── */
+.success-wrap{text-align:center;padding:48px 24px}
+.success-emoji{font-size:72px;display:block;margin-bottom:20px}
+.success-wrap h2{font-size:22px;font-weight:700;margin-bottom:8px}
+.success-sub{font-size:14px;color:#666;margin-bottom:4px;line-height:1.6}
+.wa-confirm-box{background:#eaf8f0;border:1px solid #a8dfc0;border-radius:14px;padding:16px;margin:20px 0;text-align:left;font-size:13px;color:#1a5c35;line-height:1.7}
+.wa-confirm-box strong{font-size:14px}
+.cod-confirm{background:#fff8e8;border:1px solid #f0d080;border-radius:12px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#7a5800;text-align:left;line-height:1.6}
+.cod-confirm strong{display:block;font-size:14px;margin-bottom:2px}
+.new-order-btn{padding:14px 36px;background:#1a3c2e;color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700}
+.contact-strip{background:#f5f5f5;padding:16px 20px;text-align:center;font-size:13px;color:#666;border-top:1px solid #ebebeb;margin-top:24px}
+.contact-strip a{color:#1a3c2e;font-weight:600;text-decoration:none}
+.no-results{text-align:center;padding:40px 24px;color:#999}
+.no-results span{font-size:40px;display:block;margin-bottom:10px}
 </style>
 </head>
 <body>
 <div class="app" id="app">
 
-  <!-- ═══════════════ MENU PAGE ═══════════════ -->
-  <div id="page-menu" class="page active">
+<!-- ═══ SIDE DRAWER ═══ -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <div class="drawer-logo">🍦</div>
+    <h2>Thirupathi Ice Cream</h2>
+    <p>Madhavaram, Chennai — 600060</p>
+  </div>
+  <nav class="drawer-nav">
+    <a href="https://www.thirupathiicecream.in/home" target="_blank" rel="noopener">
+      <div class="dnav-icon">🏠</div><span class="dnav-label">Home</span><span class="dnav-arrow">›</span>
+    </a>
+    <a href="https://www.thirupathiicecream.in/about-us" target="_blank" rel="noopener">
+      <div class="dnav-icon">ℹ️</div><span class="dnav-label">About Us</span><span class="dnav-arrow">›</span>
+    </a>
+    <button class="drawer-link" onclick="closeDrawer();showPage('page-menu')">
+      <div class="dnav-icon">🍦</div><span class="dnav-label">Order Ice Cream</span><span class="dnav-arrow">›</span>
+    </button>
+    <a href="https://www.thirupathiicecream.in/product" target="_blank" rel="noopener">
+      <div class="dnav-icon">🛍️</div><span class="dnav-label">All Products</span><span class="dnav-arrow">›</span>
+    </a>
+    <a href="https://www.thirupathiicecream.in/service" target="_blank" rel="noopener">
+      <div class="dnav-icon">🎪</div><span class="dnav-label">Services</span><span class="dnav-arrow">›</span>
+    </a>
+    <div class="drawer-divider"></div>
+    <a href="https://dryice.thirupathiicecream.in/" target="_blank" rel="noopener">
+      <div class="dnav-icon">🧊</div><span class="dnav-label">Dry Ice</span><span class="dnav-arrow">›</span>
+    </a>
+    <a href="https://paperplates.thirupathiicecream.in/" target="_blank" rel="noopener">
+      <div class="dnav-icon">🍽️</div><span class="dnav-label">Paper Plates</span><span class="dnav-arrow">›</span>
+    </a>
+    <div class="drawer-divider"></div>
+    <a href="https://www.thirupathiicecream.in/contact-us" target="_blank" rel="noopener">
+      <div class="dnav-icon">📞</div><span class="dnav-label">Contact Us</span><span class="dnav-arrow">›</span>
+    </a>
+    <a href="https://wa.me/919840578832?text=Hi" target="_blank" rel="noopener">
+      <div class="dnav-icon">💬</div><span class="dnav-label">WhatsApp Us</span><span class="dnav-arrow">›</span>
+    </a>
+    <a href="tel:9840578832">
+      <div class="dnav-icon">📱</div><span class="dnav-label">Call: 98405 78832</span><span class="dnav-arrow">›</span>
+    </a>
+  </nav>
+  <div class="drawer-footer">
+    &copy; 2025–26 Thirupathi Ice Cream<br>
+    <a href="https://www.thirupathiicecream.in" target="_blank">www.thirupathiicecream.in</a>
+  </div>
+</div>
 
-    <!-- Hero -->
-    <div class="hero">
-      <div class="hero-logo">🍦</div>
-      <h2>Thirupathi Ice Cream</h2>
-      <p class="hero-sub">Pure, Natural &amp; Delicious · Madhavaram, Chennai</p>
-      <div class="hero-tags">
-        <span class="hero-tag">🚚 Home Delivery</span>
-        <span class="hero-tag">💵 Cash on Delivery</span>
-        <span class="hero-tag">28+ Flavours</span>
-      </div>
-    </div>
+<!-- ═══════════════ MENU PAGE ═══════════════ -->
+<div id="page-menu" class="page active">
 
-    <!-- Search -->
-    <div class="search-bar">
-      <div class="search-wrap">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" id="search-input" placeholder="Search ice creams…" oninput="filterProducts()" autocomplete="off" autocorrect="off" spellcheck="false">
-      </div>
-    </div>
-
-    <!-- Category Tabs -->
-    <div class="cat-tabs" id="cat-tabs"></div>
-
-    <!-- Product List -->
-    <div id="product-list"></div>
-
-    <!-- Cart Sticky Bar -->
-    <div class="cart-sticky" id="cart-bar" style="display:none" onclick="showPage('page-cart')">
-      <div class="cart-sticky-left">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-        <span class="cart-items-pill" id="cart-bar-count">0 items</span>
-        <span>View Cart</span>
-      </div>
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
-    </div>
-
-  </div><!-- /page-menu -->
-
-  <!-- ═══════════════ CART PAGE ═══════════════ -->
-  <div id="page-cart" class="page">
-    <div class="topbar">
-      <button class="back-btn" onclick="showPage('page-menu')">
-        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
-      </button>
-      <h1>Your Cart</h1>
-    </div>
-    <div id="cart-content"></div>
+  <!-- Navbar -->
+  <div class="navbar">
+    <button class="nav-hamburger" onclick="openDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <span class="navbar-title">🍦 Thirupathi Ice Cream</span>
+    <button class="nav-cart-btn" onclick="showPage('page-cart')" aria-label="View cart" id="nav-cart-btn">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span class="nav-cart-badge" id="nav-cart-badge">0</span>
+    </button>
   </div>
 
-  <!-- ═══════════════ SUCCESS PAGE ═══════════════ -->
-  <div id="page-success" class="page">
-    <div class="topbar"><h1>Order Placed! 🎉</h1></div>
-    <div class="success-wrap">
-      <span class="success-emoji">✅</span>
-      <h2>Order Confirmed!</h2>
-      <p class="success-sub">Your ice cream order has been placed successfully.</p>
-      <p class="success-sub" id="success-name-line"></p>
-      <div class="wa-confirm-box">
-        <strong>📱 WhatsApp Message Sent</strong><br>
-        Your complete order details have been sent to Thirupathi Ice Cream on WhatsApp. They will contact you shortly to confirm delivery time and location.
-      </div>
-      <div class="cod-confirm">
-        <strong>💵 Payment: Cash on Delivery</strong>
-        Please keep exact cash ready when our delivery person arrives. No advance payment required.
-      </div>
-      <button class="new-order-btn" onclick="newOrder()">🍦 Order More</button>
-    </div>
-    <div class="contact-strip">
-      Need help? Call us at <a href="tel:9840578832">98405 78832</a> or <a href="tel:9840551632">98405 51632</a>
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-logo">🍦</div>
+    <h2>Order Ice Cream Online</h2>
+    <p class="hero-sub">Pure, Natural &amp; Delicious · Madhavaram, Chennai</p>
+    <div class="hero-tags">
+      <span class="hero-tag">🚚 Home Delivery</span>
+      <span class="hero-tag">💵 Cash on Delivery</span>
+      <span class="hero-tag">28+ Flavours</span>
     </div>
   </div>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <div class="search-wrap">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Search ice creams…" oninput="filterProducts()" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="cat-tabs" id="cat-tabs"></div>
+
+  <!-- Product List -->
+  <div id="product-list" style="padding-bottom:24px"></div>
+
+</div><!-- /page-menu -->
+
+<!-- ═══════════════ CART PAGE ═══════════════ -->
+<div id="page-cart" class="page">
+  <div class="navbar">
+    <button class="nav-back-btn" onclick="showPage('page-menu')">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <span class="navbar-title">Your Cart</span>
+  </div>
+  <div id="cart-content"></div>
+</div>
+
+<!-- ═══════════════ SUCCESS PAGE ═══════════════ -->
+<div id="page-success" class="page">
+  <div class="navbar">
+    <span class="navbar-title">🎉 Order Placed!</span>
+  </div>
+  <div class="success-wrap">
+    <span class="success-emoji">✅</span>
+    <h2>Order Confirmed!</h2>
+    <p class="success-sub">Your ice cream order has been placed successfully.</p>
+    <p class="success-sub" id="success-name-line"></p>
+    <div class="wa-confirm-box">
+      <strong>📱 WhatsApp Message Sent</strong><br>
+      Your complete order details have been sent to Thirupathi Ice Cream on WhatsApp. They will contact you shortly to confirm delivery time.
+    </div>
+    <div class="cod-confirm">
+      <strong>💵 Payment: Cash on Delivery</strong>
+      Please keep cash ready when our delivery person arrives. No advance payment required.
+    </div>
+    <button class="new-order-btn" onclick="newOrder()">🍦 Order More</button>
+  </div>
+  <div class="contact-strip">
+    Need help? Call us at <a href="tel:9840578832">98405 78832</a> or <a href="tel:9840551632">98405 51632</a>
+  </div>
+</div>
 
 </div><!-- /app -->
 
 <script>
 const PRODUCTS = [
-  // Classic Delights
-  {id:1,  name:"Aabugatta Ice Cream",         cat:"Classic Delights",    emoji:"🍦", desc:"A traditional favourite — creamy, layered ice cream packed with rich flavours and a festive, colourful look."},
-  {id:2,  name:"Cassata Ice Cream",            cat:"Classic Delights",    emoji:"🍰", desc:"Classic Cassata with layers of different flavoured ice creams, nuts, and tutti frutti filling."},
-  {id:3,  name:"Falooda Ice Cream",            cat:"Classic Delights",    emoji:"🥤", desc:"A refreshing treat combining ice cream with rose syrup, vermicelli, and basil seeds."},
-  {id:4,  name:"Golden Cherry Ice Cream",      cat:"Classic Delights",    emoji:"🍒", desc:"Rich golden cherry-flavoured ice cream with a sweet, fruity taste and beautiful golden presentation."},
-  {id:5,  name:"Roll Ice Cream",               cat:"Classic Delights",    emoji:"🌀", desc:"Freshly rolled ice cream prepared on a cold plate, customised with your favourite toppings."},
-  {id:6,  name:"Fried Ice Cream",              cat:"Classic Delights",    emoji:"🍳", desc:"Unique dessert — ice cream coated in a crispy shell, fried golden on the outside while staying cold inside."},
-  // Signature Specials
-  {id:7,  name:"Rangeela Ice Cream",           cat:"Signature Specials",  emoji:"🌈", desc:"A vibrant multi-coloured ice cream that is as beautiful as it is delicious — a true visual delight."},
-  {id:8,  name:"Raja Rani Ice Cream",          cat:"Signature Specials",  emoji:"👑", desc:"A royal combination of premium flavours — rich, decadent, and fit for a king and queen."},
-  {id:9,  name:"Sandwich Ice Cream",           cat:"Signature Specials",  emoji:"🥪", desc:"Creamy ice cream pressed between two soft wafer biscuits — a classic Chennai street favourite."},
-  {id:10, name:"Stone Ice Cream",              cat:"Signature Specials",  emoji:"🪨", desc:"Ice cream served and freshly mixed on a cold stone with your choice of toppings and ingredients."},
-  {id:11, name:"Dosa Ice Cream",               cat:"Signature Specials",  emoji:"🫓", desc:"A creative fusion — ice cream served in a crispy dosa cone, a Chennai specialty delight."},
-  {id:12, name:"Gola Ice Cream",               cat:"Signature Specials",  emoji:"🧊", desc:"Crushed ice pops with vibrant flavoured syrups — a refreshing summer favourite from the streets."},
-  // Fruity Favourites
-  {id:13, name:"Real Orange Ice Cream",        cat:"Fruity Favourites",   emoji:"🍊", desc:"Made with real oranges — a natural, tangy-sweet ice cream with a fresh citrus burst in every bite."},
-  {id:14, name:"Real Guava Ice Cream",         cat:"Fruity Favourites",   emoji:"🍈", desc:"100% real guava flavour — a unique tropical ice cream that is refreshing and naturally sweet."},
-  {id:15, name:"Real Mango Ice Cream",         cat:"Fruity Favourites",   emoji:"🥭", desc:"Made with finest mangoes — creamy, fruity, and bursting with natural mango flavour. A true summer treat."},
-  {id:16, name:"Chikoo Ice Cream",             cat:"Fruity Favourites",   emoji:"🍂", desc:"Rich and creamy Chikoo (Sapota) ice cream with a natural caramel-like sweetness loved by all ages."},
-  {id:17, name:"Kulfi Ice Cream",              cat:"Fruity Favourites",   emoji:"🧊", desc:"Traditional Indian frozen dessert — dense, creamy, and flavoured with cardamom, saffron, and nuts."},
-  {id:18, name:"Scooping Multi Flavors",       cat:"Fruity Favourites",   emoji:"🍨", desc:"Mix and match your favourite scoops — choose from a wide variety of flavours served in one bowl."},
-  // Rich & Creamy
-  {id:19, name:"Butterscotch Ice Cream",       cat:"Rich & Creamy",       emoji:"🍯", desc:"Smooth and buttery ice cream with crunchy butterscotch bits and a caramelised toffee flavour."},
-  {id:20, name:"Blackcurrant Ice Cream",       cat:"Rich & Creamy",       emoji:"🫐", desc:"Deep purple, tangy-sweet blackcurrant ice cream — intensely fruity with a very refreshing finish."},
-  {id:21, name:"Pista Ice Cream",              cat:"Rich & Creamy",       emoji:"🌿", desc:"Premium pistachio ice cream with real pista pieces — rich, nutty, and distinctly aromatic."},
-  {id:22, name:"Orange Ice Cream",             cat:"Rich & Creamy",       emoji:"🍊", desc:"Classic orange-flavoured ice cream — smooth, citrusy, and perfectly sweet for any occasion."},
-  {id:23, name:"Chocolate Ice Cream",          cat:"Rich & Creamy",       emoji:"🍫", desc:"Indulgent, velvety chocolate ice cream made with rich cocoa for the ultimate chocolate lover."},
-  {id:24, name:"Biscuit Ice Cream",            cat:"Rich & Creamy",       emoji:"🍪", desc:"Creamy ice cream packed with crunchy biscuit pieces — a delightful texture in every single bite."},
-  {id:25, name:"Honey Nut Ice Cream",          cat:"Rich & Creamy",       emoji:"🍯", desc:"Sweet honey-flavoured ice cream with crunchy mixed nuts — a wholesome and indulgent treat."},
-  {id:26, name:"Tutti Frutti Ice Cream",       cat:"Rich & Creamy",       emoji:"🎉", desc:"Colourful ice cream loaded with candied fruit pieces — a festive favourite loved by all ages."},
-  {id:27, name:"Gulkand Ice Cream",            cat:"Rich & Creamy",       emoji:"🌹", desc:"Rose petal preserve (Gulkand) infused ice cream — cooling, aromatic, and wonderfully fragrant."},
-  {id:28, name:"Brownie Ice Cream",            cat:"Rich & Creamy",       emoji:"🍫", desc:"Warm brownie crumbles folded into creamy ice cream — the perfect hot-and-cold dessert experience."}
+  {id:1, name:"Aabugatta Ice Cream",       cat:"Classic Delights",   emoji:"🍦", desc:"A traditional favourite — creamy, layered ice cream packed with rich flavours and a festive, colourful look."},
+  {id:2, name:"Cassata Ice Cream",          cat:"Classic Delights",   emoji:"🍰", desc:"Classic Cassata with layers of different flavoured ice creams, nuts, and tutti frutti filling."},
+  {id:3, name:"Falooda Ice Cream",          cat:"Classic Delights",   emoji:"🥤", desc:"A refreshing treat combining ice cream with rose syrup, vermicelli, and basil seeds."},
+  {id:4, name:"Golden Cherry Ice Cream",    cat:"Classic Delights",   emoji:"🍒", desc:"Rich golden cherry-flavoured ice cream with a sweet, fruity taste and beautiful golden presentation."},
+  {id:5, name:"Roll Ice Cream",             cat:"Classic Delights",   emoji:"🌀", desc:"Freshly rolled ice cream prepared on a cold plate, customised with your favourite toppings."},
+  {id:6, name:"Fried Ice Cream",            cat:"Classic Delights",   emoji:"🍳", desc:"Unique dessert — ice cream coated in a crispy shell, fried golden outside while staying cold inside."},
+  {id:7, name:"Rangeela Ice Cream",         cat:"Signature Specials", emoji:"🌈", desc:"A vibrant multi-coloured ice cream that is as beautiful as it is delicious — a true visual delight."},
+  {id:8, name:"Raja Rani Ice Cream",        cat:"Signature Specials", emoji:"👑", desc:"A royal combination of premium flavours — rich, decadent, and fit for a king and queen."},
+  {id:9, name:"Sandwich Ice Cream",         cat:"Signature Specials", emoji:"🥪", desc:"Creamy ice cream pressed between two soft wafer biscuits — a classic Chennai street favourite."},
+  {id:10,name:"Stone Ice Cream",            cat:"Signature Specials", emoji:"🪨", desc:"Ice cream freshly mixed on a cold stone with your choice of toppings and ingredients."},
+  {id:11,name:"Dosa Ice Cream",             cat:"Signature Specials", emoji:"🫓", desc:"A creative fusion — ice cream served in a crispy dosa cone, a Chennai specialty delight."},
+  {id:12,name:"Gola Ice Cream",             cat:"Signature Specials", emoji:"🧊", desc:"Crushed ice pops with vibrant flavoured syrups — a refreshing summer favourite."},
+  {id:13,name:"Real Orange Ice Cream",      cat:"Fruity Favourites",  emoji:"🍊", desc:"Made with real oranges — a natural, tangy-sweet ice cream with a fresh citrus burst."},
+  {id:14,name:"Real Guava Ice Cream",       cat:"Fruity Favourites",  emoji:"🍈", desc:"100% real guava flavour — a unique tropical ice cream that is refreshing and naturally sweet."},
+  {id:15,name:"Real Mango Ice Cream",       cat:"Fruity Favourites",  emoji:"🥭", desc:"Made with finest mangoes — creamy, fruity, and bursting with natural mango flavour."},
+  {id:16,name:"Chikoo Ice Cream",           cat:"Fruity Favourites",  emoji:"🍂", desc:"Rich and creamy Chikoo (Sapota) ice cream with a natural caramel-like sweetness."},
+  {id:17,name:"Kulfi Ice Cream",            cat:"Fruity Favourites",  emoji:"🧊", desc:"Traditional Indian frozen dessert — dense, creamy, flavoured with cardamom, saffron, and nuts."},
+  {id:18,name:"Scooping Multi Flavors",     cat:"Fruity Favourites",  emoji:"🍨", desc:"Mix and match your favourite scoops — choose from a wide variety of flavours in one bowl."},
+  {id:19,name:"Butterscotch Ice Cream",     cat:"Rich & Creamy",      emoji:"🍯", desc:"Smooth and buttery ice cream with crunchy butterscotch bits and a caramelised toffee flavour."},
+  {id:20,name:"Blackcurrant Ice Cream",     cat:"Rich & Creamy",      emoji:"🫐", desc:"Deep purple, tangy-sweet blackcurrant ice cream — intensely fruity with a refreshing finish."},
+  {id:21,name:"Pista Ice Cream",            cat:"Rich & Creamy",      emoji:"🌿", desc:"Premium pistachio ice cream with real pista pieces — rich, nutty, and distinctly aromatic."},
+  {id:22,name:"Orange Ice Cream",           cat:"Rich & Creamy",      emoji:"🍊", desc:"Classic orange-flavoured ice cream — smooth, citrusy, and perfectly sweet for any occasion."},
+  {id:23,name:"Chocolate Ice Cream",        cat:"Rich & Creamy",      emoji:"🍫", desc:"Indulgent, velvety chocolate ice cream made with rich cocoa for the ultimate chocolate lover."},
+  {id:24,name:"Biscuit Ice Cream",          cat:"Rich & Creamy",      emoji:"🍪", desc:"Creamy ice cream packed with crunchy biscuit pieces — a delightful texture in every bite."},
+  {id:25,name:"Honey Nut Ice Cream",        cat:"Rich & Creamy",      emoji:"🍯", desc:"Sweet honey-flavoured ice cream with crunchy mixed nuts — wholesome and indulgent."},
+  {id:26,name:"Tutti Frutti Ice Cream",     cat:"Rich & Creamy",      emoji:"🎉", desc:"Colourful ice cream loaded with candied fruit pieces — a festive favourite for all ages."},
+  {id:27,name:"Gulkand Ice Cream",          cat:"Rich & Creamy",      emoji:"🌹", desc:"Rose petal preserve (Gulkand) infused ice cream — cooling, aromatic, and wonderfully fragrant."},
+  {id:28,name:"Brownie Ice Cream",          cat:"Rich & Creamy",      emoji:"🍫", desc:"Warm brownie crumbles folded into creamy ice cream — the perfect hot-and-cold experience."}
 ];
 
 const CATS = ["All","Classic Delights","Signature Specials","Fruity Favourites","Rich & Creamy"];
@@ -245,12 +306,24 @@ let cart = {};
 let activeCat = "All";
 let searchTerm = "";
 
+/* ── DRAWER ── */
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
 /* ── INIT ── */
 function init(){
   const tabs = document.getElementById('cat-tabs');
   CATS.forEach(c=>{
     const b = document.createElement('button');
-    b.className = 'cat-tab' + (c==='All' ? ' active' : '');
+    b.className = 'cat-tab'+(c==='All'?' active':'');
     b.textContent = c;
     b.onclick = ()=>{
       activeCat = c;
@@ -279,27 +352,23 @@ function renderProducts(){
   });
 
   if(!filtered.length){
-    list.innerHTML = `<div class="no-results"><span>🍦</span><p>No items found for "<strong>${searchTerm}</strong>"</p></div>`;
-    updateCartBar(); return;
+    list.innerHTML=`<div class="no-results"><span>🍦</span><p>No items found</p></div>`;
+    updateCartBadge(); return;
   }
 
-  const byCat = {};
+  const byCat={};
   filtered.forEach(p=>{ if(!byCat[p.cat]) byCat[p.cat]=[]; byCat[p.cat].push(p); });
 
-  let html = '';
+  let html='';
   Object.keys(byCat).forEach(cat=>{
-    if(activeCat==='All') html += `<div class="section-label">${cat}</div>`;
-    html += '<div class="product-grid">';
+    if(activeCat==='All') html+=`<div class="section-label">${cat}</div>`;
+    html+='<div class="product-grid">';
     byCat[cat].forEach(p=>{
-      const qty = cart[p.id] || 0;
+      const qty=cart[p.id]||0;
       const ctrl = qty===0
         ? `<button class="add-btn" onclick="addToCart(${p.id})">+ Add</button>`
-        : `<div class="qty-row">
-             <button onclick="removeFromCart(${p.id})">−</button>
-             <span>${qty}</span>
-             <button onclick="addToCart(${p.id})">+</button>
-           </div>`;
-      html += `<div class="product-card">
+        : `<div class="qty-row"><button onclick="removeFromCart(${p.id})">−</button><span>${qty}</span><button onclick="addToCart(${p.id})">+</button></div>`;
+      html+=`<div class="product-card">
         <div class="prod-thumb">${p.emoji}</div>
         <div class="prod-body">
           <div class="prod-name">${p.name}</div>
@@ -308,36 +377,26 @@ function renderProducts(){
         </div>
       </div>`;
     });
-    html += '</div>';
+    html+='</div>';
   });
-  list.innerHTML = html;
-  updateCartBar();
+  list.innerHTML=html;
+  updateCartBadge();
 }
 
-/* ── CART ACTIONS ── */
-function addToCart(id){
-  cart[id] = (cart[id]||0) + 1;
-  renderProducts();
-}
-function removeFromCart(id){
-  if(cart[id] > 0) cart[id]--;
-  if(cart[id] === 0) delete cart[id];
-  renderProducts();
-}
+/* ── CART ── */
+function addToCart(id){ cart[id]=(cart[id]||0)+1; renderProducts(); }
+function removeFromCart(id){ if(cart[id]>0) cart[id]--; if(cart[id]===0) delete cart[id]; renderProducts(); }
 function totalItems(){ return Object.values(cart).reduce((a,b)=>a+b,0); }
 
-function updateCartBar(){
-  const bar = document.getElementById('cart-bar');
-  const n = totalItems();
-  if(n > 0){
-    bar.style.display = 'flex';
-    document.getElementById('cart-bar-count').textContent = n + ' item' + (n>1?'s':'');
-  } else {
-    bar.style.display = 'none';
-  }
+function updateCartBadge(){
+  const n=totalItems();
+  const badge=document.getElementById('nav-cart-badge');
+  const btn=document.getElementById('nav-cart-btn');
+  if(n>0){ badge.textContent=n; badge.style.display='flex'; btn.style.color='#f0a500'; }
+  else { badge.style.display='none'; btn.style.color='#fff'; }
 }
 
-/* ── PAGE NAVIGATION ── */
+/* ── NAVIGATION ── */
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -347,9 +406,9 @@ function showPage(id){
 
 /* ── RENDER CART ── */
 function renderCart(){
-  const n = totalItems();
+  const n=totalItems();
   if(n===0){
-    document.getElementById('cart-content').innerHTML = `
+    document.getElementById('cart-content').innerHTML=`
       <div class="empty-cart">
         <span class="big-emoji">🛒</span>
         <h3>Your cart is empty</h3>
@@ -359,36 +418,33 @@ function renderCart(){
     return;
   }
 
-  // Items
-  let itemsHtml = '<div class="cart-items-list">';
+  let itemsHtml='<div class="cart-items-list">';
   Object.keys(cart).forEach(id=>{
-    const p = PRODUCTS.find(x=>x.id==id);
-    itemsHtml += `
-      <div class="cart-item-row">
-        <div class="cart-item-emoji">${p.emoji}</div>
-        <div class="cart-item-info">
-          <div class="cart-item-name">${p.name}</div>
-          <div class="cart-item-qty">
-            <button onclick="removeFromCart(${id});renderCart()">−</button>
-            <span>${cart[id]}</span>
-            <button onclick="addToCart(${id});renderCart()">+</button>
-          </div>
+    const p=PRODUCTS.find(x=>x.id==id);
+    itemsHtml+=`<div class="cart-item-row">
+      <div class="cart-item-emoji">${p.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${p.name}</div>
+        <div class="cart-item-qty">
+          <button onclick="removeFromCart(${id});renderCart()">−</button>
+          <span>${cart[id]}</span>
+          <button onclick="addToCart(${id});renderCart()">+</button>
         </div>
-        <button class="remove-item-btn" onclick="delete cart[${id}];renderCart()" title="Remove">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-        </button>
-      </div>`;
+      </div>
+      <button class="remove-item-btn" onclick="delete cart[${id}];renderCart()" title="Remove">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+      </button>
+    </div>`;
   });
-  itemsHtml += '</div>';
+  itemsHtml+='</div>';
 
-  // Order summary
-  let summaryRows = Object.keys(cart).map(id=>{
-    const p = PRODUCTS.find(x=>x.id==id);
+  let summaryRows=Object.keys(cart).map(id=>{
+    const p=PRODUCTS.find(x=>x.id==id);
     return `<div class="order-row"><span>${p.name}</span><span>× ${cart[id]}</span></div>`;
   }).join('');
-  summaryRows += `<div class="order-row total"><span>Total Items</span><span>${n} item${n>1?'s':''}</span></div>`;
+  summaryRows+=`<div class="order-row total"><span>Total Items</span><span>${n} item${n>1?'s':''}</span></div>`;
 
-  document.getElementById('cart-content').innerHTML = `
+  document.getElementById('cart-content').innerHTML=`
     ${itemsHtml}
     <div class="order-box"><h4>Order Summary</h4>${summaryRows}</div>
     <div class="cod-badge">
@@ -422,54 +478,37 @@ function renderCart(){
 
 /* ── PLACE ORDER ── */
 function placeOrder(){
-  const name  = (document.getElementById('f-name').value||'').trim();
-  const phone = (document.getElementById('f-phone').value||'').trim();
-  const addr  = (document.getElementById('f-addr').value||'').trim();
-  const notes = (document.getElementById('f-notes').value||'').trim();
-
+  const name=(document.getElementById('f-name').value||'').trim();
+  const phone=(document.getElementById('f-phone').value||'').trim();
+  const addr=(document.getElementById('f-addr').value||'').trim();
+  const notes=(document.getElementById('f-notes').value||'').trim();
   if(!name){ alert('Please enter your name.'); document.getElementById('f-name').focus(); return; }
   if(!phone){ alert('Please enter your phone number.'); document.getElementById('f-phone').focus(); return; }
   if(!addr){ alert('Please enter your delivery address.'); document.getElementById('f-addr').focus(); return; }
-
-  const now = new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata',hour12:true,day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-
-  let msg = '';
-  msg += '🍦 *NEW ORDER — Thirupathi Ice Cream App*\n';
-  msg += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
-  msg += '*📋 Order Details:*\n';
-  msg += `🕐 Date & Time: ${now}\n\n`;
-  msg += '*👤 Customer:*\n';
-  msg += `Name: ${name}\n`;
-  msg += `Phone: ${phone}\n`;
-  msg += `Address: ${addr}\n`;
-  if(notes) msg += `Instructions: ${notes}\n`;
-  msg += '\n*🍦 Items Ordered:*\n';
+  const now=new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata',hour12:true,day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  let msg='🍦 *NEW ORDER — Thirupathi Ice Cream App*\n';
+  msg+='━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  msg+='*📋 Order Details:*\n';
+  msg+=`🕐 Date & Time: ${now}\n\n`;
+  msg+='*👤 Customer:*\n';
+  msg+=`Name: ${name}\nPhone: ${phone}\nAddress: ${addr}\n`;
+  if(notes) msg+=`Instructions: ${notes}\n`;
+  msg+='\n*🍦 Items Ordered:*\n';
   Object.keys(cart).forEach(id=>{
-    const p = PRODUCTS.find(x=>x.id==id);
-    msg += `• ${p.emoji} ${p.name}  ×${cart[id]}\n`;
+    const p=PRODUCTS.find(x=>x.id==id);
+    msg+=`• ${p.emoji} ${p.name}  ×${cart[id]}\n`;
   });
-  msg += `\n📦 Total Items: *${totalItems()}*\n`;
-  msg += '\n💵 *Payment: Cash on Delivery*\n';
-  msg += '━━━━━━━━━━━━━━━━━━━━━━\n';
-  msg += 'Sent via Thirupathi Ice Cream App 🍦';
-
-  const waURL = 'https://wa.me/919840578832?text=' + encodeURIComponent(msg);
-  window.open(waURL, '_blank');
-
-  document.getElementById('success-name-line').textContent =
-    `Thank you, ${name}! We'll reach you at ${phone} to confirm.`;
-  cart = {};
+  msg+=`\n📦 Total Items: *${totalItems()}*\n`;
+  msg+='\n💵 *Payment: Cash on Delivery*\n';
+  msg+='━━━━━━━━━━━━━━━━━━━━━━\n';
+  msg+='Sent via Thirupathi Ice Cream App 🍦';
+  window.open('https://wa.me/919840578832?text='+encodeURIComponent(msg),'_blank');
+  document.getElementById('success-name-line').textContent=`Thank you, ${name}! We'll reach you at ${phone} to confirm.`;
+  cart={};
   showPage('page-success');
 }
 
-/* ── NEW ORDER ── */
-function newOrder(){
-  cart = {};
-  showPage('page-menu');
-  renderProducts();
-}
-
-/* ── START ── */
+function newOrder(){ cart={}; showPage('page-menu'); renderProducts(); }
 init();
 </script>
 </body>
