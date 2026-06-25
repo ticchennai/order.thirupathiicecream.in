@@ -86,7 +86,7 @@ Payment is **Cash on Delivery** — no online payment required.
 | | |
 |-|-|
 | **Business Name** | Thirupathi Ice Cream |
-| **Legal Name** | Ramesh Kumar Paras Mal |
+| **Legal Name** | Manish J |
 | **Location** | No 471, V S Mani Nagar, Madhavaram, Chennai — 600060 |
 | **Phone** | +91 98405 78832 |
 | **Phone 2** | +91 98405 51632 |
